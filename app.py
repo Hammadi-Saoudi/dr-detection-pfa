@@ -10,6 +10,14 @@ import matplotlib
 matplotlib.use('Agg')
 import io, base64, datetime, os
 import pandas as pd
+import gdown
+import os
+
+MODEL_PATH = "best_model.pth"
+
+if not os.path.exists(MODEL_PATH):
+    url = "https://drive.google.com/uc?id=1up0E_dCI4ZcEWmT9Lu_xGvDq88LUj6Jt"
+    gdown.download(url, MODEL_PATH, quiet=False)
 
 st.set_page_config(
     page_title="RetinaAI — DR Screening",
