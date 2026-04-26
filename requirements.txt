@@ -1,22 +1,23 @@
-# ── Core framework ─────────────────────────────────────────
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# ── Core framework ──────────────────────────────────────────
 streamlit==1.35.0
 
-# ── Deep learning ───────────────────────────────────────────
-# CPU-only torch for Streamlit Cloud (no GPU available)
-torch==2.2.2
-torchvision==0.17.2
+# ── Deep learning (CPU-only — no CUDA on Streamlit Cloud) ───
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
 timm==0.9.16
 
-# ── Image processing ────────────────────────────────────────
+# ── Image processing ─────────────────────────────────────────
 Pillow==10.3.0
 opencv-python-headless==4.9.0.80
 numpy==1.26.4
 
-# ── Data & export ───────────────────────────────────────────
+# ── Data & export ────────────────────────────────────────────
 pandas==2.2.2
 fpdf2==2.7.9
 qrcode==7.4.2
 
-# ── Google Drive model download ─────────────────────────────
+# ── Google Drive model download ──────────────────────────────
 gdown==5.2.0
 matplotlib>=3.7.0
