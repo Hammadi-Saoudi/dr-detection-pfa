@@ -10,14 +10,6 @@ import matplotlib
 matplotlib.use('Agg')
 import io, base64, datetime, os
 import pandas as pd
-import gdown
-import os
-
-MODEL_PATH = "best_model.pth"
-
-if not os.path.exists(MODEL_PATH):
-    url = "https://drive.google.com/uc?id=1up0E_dCI4ZcEWmT9Lu_xGvDq88LUj6Jt"
-    gdown.download(url, MODEL_PATH, quiet=False)
 
 st.set_page_config(
     page_title="RetinaAI — DR Screening",
@@ -476,10 +468,32 @@ class HybridModel(nn.Module):
         swin_out = torch.mean(swin_att.flatten(2), dim=2)
         return self.classifier(torch.cat((eff_out, swin_out), dim=1))
 
+# ── Google Drive file ID for the model weights ───────────────
+# Replace with your actual file ID from Google Drive share link:
+# https://drive.google.com/file/d/FILE_ID/view  →  copy FILE_ID
+GDRIVE_FILE_ID = "1up0E_dCI4ZcEWmT9Lu_xGvDq88LUj6Jt"
+
 @st.cache_resource
 def load_model(path):
+    """Load weights, auto-downloading from Google Drive if needed."""
     if not os.path.exists(path):
-        return None, f"Model file not found: '{path}'"
+        if GDRIVE_FILE_ID and GDRIVE_FILE_ID != "YOUR_GDRIVE_FILE_ID_HERE":
+            try:
+                import gdown
+                st.info("Downloading model weights from Google Drive...")
+                gdown.download(f"https://drive.google.com/uc?id={GDRIVE_FILE_ID}",
+                               path, quiet=False)
+            except Exception as e:
+                return None, f"Download failed: {e}"
+        else:
+            return None, (
+                "Model file not found. Set GDRIVE_FILE_ID in app.py "
+                "or place best_model.pth next to app.py."
+            )
+
+    if not os.path.exists(path):
+        return None, f"Model still not found at {path!r} after download attempt."
+
     try:
         m = HybridModel(num_classes=5).to(DEVICE)
         m.load_state_dict(torch.load(path, map_location=DEVICE))

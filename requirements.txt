@@ -1,12 +1,22 @@
-streamlit>=1.32.0
-torch>=2.0.0
-torchvision>=0.15.0
-timm>=0.9.0
-opencv-python-headless>=4.8.0
-Pillow>=10.0.0
-numpy>=1.24.0
-pandas>=2.0.0
-fpdf2>=2.7.0
-qrcode[pil]>=7.4.0
-gdown>=4.7.0
+# ── Core framework ─────────────────────────────────────────
+streamlit==1.35.0
+
+# ── Deep learning ───────────────────────────────────────────
+# CPU-only torch for Streamlit Cloud (no GPU available)
+torch==2.2.2
+torchvision==0.17.2
+timm==0.9.16
+
+# ── Image processing ────────────────────────────────────────
+Pillow==10.3.0
+opencv-python-headless==4.9.0.80
+numpy==1.26.4
+
+# ── Data & export ───────────────────────────────────────────
+pandas==2.2.2
+fpdf2==2.7.9
+qrcode==7.4.2
+
+# ── Google Drive model download ─────────────────────────────
+gdown==5.2.0
 matplotlib>=3.7.0
