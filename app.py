@@ -34,18 +34,11 @@ st.markdown("""
 .stApp {
     background: #eef2f7;
     background-image:
-        radial-gradient(circle at 20% 30%, rgba(37,99,235,0.04) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(124,58,237,0.04) 0%, transparent 50%),
         url('https://wallpapers.com/images/hd/eye-1920-x-1080-background-hkpmggsk16dpn7oi.jpg');
     background-size: cover;
     background-attachment: fixed;
-    background-blend-mode: luminosity;
 }
-.main  { background: transparent; }
-.block-container {
-    padding: 0 2rem 2rem 2rem !important;
-    max-width: 100% !important;
-}
+
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
