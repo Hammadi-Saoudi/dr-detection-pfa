@@ -12,14 +12,14 @@ import io, base64, datetime, os
 import pandas as pd
 
 st.set_page_config(
-    page_title="RetinaAI — DR Screening",
+    page_title="RetinaScreen — DR Screening",
     page_icon="👁",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ─────────────────────────────────────────────────────────────
-# CSS — Light main area, dark sidebar
+# CSS — Clinical Light main area, Navy sidebar
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -30,9 +30,18 @@ st.markdown("""
     box-sizing: border-box;
 }
 
-/* ── Main area (light) ─────────────────────────────────── */
-.stApp { background: #f1f5f9; }
-.main  { background: #f1f5f9; }
+/* ── Main area (clinical light) ─────────────────────────── */
+.stApp {
+    background: #eef2f7;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(37,99,235,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(124,58,237,0.04) 0%, transparent 50%),
+        url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=1920&q=20&auto=format&fit=crop');
+    background-size: cover;
+    background-attachment: fixed;
+    background-blend-mode: luminosity;
+}
+.main  { background: transparent; }
 .block-container {
     padding: 0 2rem 2rem 2rem !important;
     max-width: 100% !important;
@@ -40,10 +49,10 @@ st.markdown("""
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
-/* ── Sidebar (dark) ─────────────────────────────────────── */
+/* ── Sidebar (navy blue) ─────────────────────────────────── */
 [data-testid="stSidebar"] {
-    background: #0f172a !important;
-    border-right: 1px solid #1e293b !important;
+    background: #0a1f44 !important;
+    border-right: 1px solid #112240 !important;
     padding-top: 0 !important;
 }
 [data-testid="stSidebar"] > div:first-child {
@@ -52,15 +61,15 @@ st.markdown("""
 [data-testid="stSidebar"] p,
 [data-testid="stSidebar"] span,
 [data-testid="stSidebar"] div {
-    color: #94a3b8;
+    color: #93b4d9;
 }
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: #e2e8f0 !important;
+    color: #dbeafe !important;
 }
 [data-testid="stSidebar"] label {
-    color: #64748b !important;
+    color: #6b92b8 !important;
     font-size: 0.73rem !important;
     font-weight: 500 !important;
     letter-spacing: 0.04em !important;
@@ -68,29 +77,29 @@ st.markdown("""
 }
 [data-testid="stSidebar"] input,
 [data-testid="stSidebar"] textarea {
-    background: #1e293b !important;
-    border: 1px solid #334155 !important;
-    color: #e2e8f0 !important;
+    background: #112240 !important;
+    border: 1px solid #1e3a5f !important;
+    color: #dbeafe !important;
     border-radius: 8px !important;
     font-size: 0.84rem !important;
 }
 [data-testid="stSidebar"] [data-baseweb="select"] > div {
-    background: #1e293b !important;
-    border: 1px solid #334155 !important;
-    color: #e2e8f0 !important;
+    background: #112240 !important;
+    border: 1px solid #1e3a5f !important;
+    color: #dbeafe !important;
     border-radius: 8px !important;
 }
 [data-testid="stSidebar"] [data-baseweb="select"] * {
-    color: #e2e8f0 !important;
+    color: #dbeafe !important;
 }
 [data-testid="stSidebar"] [data-testid="stNumberInput"] input {
-    background: #1e293b !important;
-    border: 1px solid #334155 !important;
-    color: #e2e8f0 !important;
+    background: #112240 !important;
+    border: 1px solid #1e3a5f !important;
+    color: #dbeafe !important;
 }
-[data-testid="stSidebar"] .stSlider * { color: #64748b !important; }
+[data-testid="stSidebar"] .stSlider * { color: #6b92b8 !important; }
 [data-testid="stSidebar"] [data-testid="stCheckbox"] label {
-    color: #94a3b8 !important;
+    color: #93b4d9 !important;
     text-transform: none !important;
     font-size: 0.82rem !important;
 }
@@ -103,43 +112,50 @@ st.markdown("""
     width: 100% !important;
 }
 [data-testid="stSidebar"] hr {
-    border-color: #1e293b !important;
+    border-color: #112240 !important;
     margin: 1rem 0 !important;
 }
 
 /* ── Topbar ─────────────────────────────────────────────── */
 .topbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem; height: 58px;
-    background: white;
-    border-bottom: 1px solid #e2e8f0;
+    padding: 0 2rem; height: 62px;
+    background: linear-gradient(135deg, #0a1f44 0%, #0d2461 100%);
+    border-bottom: 2px solid #1e3a8a;
     margin: 0 -2rem 1.5rem -2rem;
     position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 16px rgba(10,31,68,0.35);
 }
-.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logo-wrap { display: flex; align-items: center; gap: 12px; }
 .logo-icon {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
-    border-radius: 8px; display: flex; align-items: center;
-    justify-content: center; font-size: 1rem;
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    border-radius: 10px; display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.4);
 }
-.logo-text { font-size: 1rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; }
-.logo-sub  { font-size: 0.6rem; color: #94a3b8; letter-spacing: 0.1em; text-transform: uppercase; }
+.logo-text { font-size: 1.1rem; font-weight: 800; color: #f0f9ff; letter-spacing: -0.02em; }
+.logo-sub  { font-size: 0.6rem; color: #7dd3fc; letter-spacing: 0.12em; text-transform: uppercase; }
 .topbar-right { display: flex; align-items: center; gap: 12px; }
 .topbar-badge {
-    background: #eff6ff; border: 1px solid #bfdbfe;
-    color: #2563eb; font-size: 0.68rem; font-weight: 600;
-    padding: 4px 10px; border-radius: 20px;
+    background: rgba(59,130,246,0.15); border: 1px solid #3b82f6;
+    color: #93c5fd; font-size: 0.68rem; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
 }
-.topbar-dot {
-    display: inline-block; width: 6px; height: 6px;
-    background: #22c55e; border-radius: 50%;
-    box-shadow: 0 0 6px #22c55e; vertical-align: middle;
-    margin-right: 4px;
-    animation: pulse 2s ease infinite;
+.topbar-divider {
+    width: 1px; height: 28px; background: #1e3a5f; margin: 0 4px;
 }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.topbar-clinic {
+    display: flex; align-items: center; gap: 8px;
+}
+.topbar-clinic-icon {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+}
+.topbar-clinic-text { font-size: 0.7rem; color: #7dd3fc; font-weight: 500; }
+.topbar-clinic-sub  { font-size: 0.58rem; color: #4b80a8; }
 
 /* ── Tabs ──────────────────────────────────────────────── */
 .stTabs [data-baseweb="tab-list"] {
@@ -165,10 +181,11 @@ st.markdown("""
 
 /* ── Cards ─────────────────────────────────────────────── */
 .card {
-    background: white; border: 1px solid #e2e8f0;
+    background: rgba(255,255,255,0.95); border: 1px solid #e2e8f0;
     border-radius: 14px; padding: 1.25rem 1.4rem;
     margin-bottom: 1rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(10,31,68,0.08);
+    backdrop-filter: blur(8px);
 }
 .card-title {
     font-size: 0.68rem; font-weight: 600;
@@ -188,6 +205,7 @@ st.markdown("""
     display: flex; align-items: center;
     gap: 1.5rem; flex-wrap: wrap;
     border: 1px solid;
+    backdrop-filter: blur(8px);
 }
 .rb0 { background: linear-gradient(135deg,#f0fdf4,#dcfce7); border-color: #86efac; }
 .rb1 { background: linear-gradient(135deg,#fefce8,#fef9c3); border-color: #fde047; }
@@ -263,7 +281,7 @@ st.markdown("""
 
 /* ── Stat cards ─────────────────────────────────────────── */
 .stat-card {
-    background: white; border: 1px solid #e2e8f0;
+    background: rgba(255,255,255,0.95); border: 1px solid #e2e8f0;
     border-radius: 12px; padding: 1rem 1.2rem;
     text-align: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
@@ -276,34 +294,35 @@ st.markdown("""
 
 /* ── Sidebar brand ──────────────────────────────────────── */
 .sb-brand {
-    background: linear-gradient(135deg, #1e3a5f, #1e2d4f);
-    border-bottom: 1px solid #1e293b;
-    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #071530, #0a1f44);
+    border-bottom: 1px solid #112240;
+    padding: 1.1rem 1.25rem;
     margin: -1rem -1rem 1rem -1rem;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 12px;
 }
-.sb-logo  { width: 28px; height: 28px;
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
-    border-radius: 7px; display: flex; align-items: center;
-    justify-content: center; font-size: 0.9rem;
+.sb-logo  { width: 32px; height: 32px;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.4);
 }
-.sb-title { font-size: 0.9rem; font-weight: 700; color: #f1f5f9 !important; }
-.sb-sub   { font-size: 0.58rem; color: #475569 !important;
+.sb-title { font-size: 0.95rem; font-weight: 700; color: #f0f9ff !important; }
+.sb-sub   { font-size: 0.58rem; color: #4b80a8 !important;
             letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ── Section header ─────────────────────────────────────── */
 .sb-section {
     font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #334155 !important;
+    text-transform: uppercase; color: #4b80a8 !important;
     margin: 1rem 0 0.5rem 0; padding-top: 0.75rem;
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #112240;
 }
 
 /* ── Upload area ────────────────────────────────────────── */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #cbd5e1 !important;
+    border: 2px dashed #bfdbfe !important;
     border-radius: 12px !important;
-    background: white !important;
+    background: rgba(255,255,255,0.9) !important;
     transition: border-color 0.2s;
 }
 [data-testid="stFileUploader"]:hover {
@@ -316,12 +335,12 @@ st.markdown("""
 
 /* ── Buttons ─────────────────────────────────────────────── */
 .stButton button {
-    background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
     color: white !important; border: none !important;
     border-radius: 10px !important; padding: 0.55rem 1.4rem !important;
     font-size: 0.84rem !important; font-weight: 600 !important;
     cursor: pointer !important; transition: opacity 0.2s !important;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.25) !important;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.3) !important;
 }
 .stButton button:hover { opacity: 0.88 !important; }
 
@@ -334,6 +353,77 @@ st.markdown("""
 
 /* ── History table ──────────────────────────────────────── */
 .stDataFrame { background: white !important; border-radius: 12px !important; }
+
+/* ── Clinical hero banner ───────────────────────────────── */
+.clinical-hero {
+    background: linear-gradient(135deg, #0a1f44 0%, #0d2461 60%, #1e3a8a 100%);
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(10,31,68,0.25);
+}
+.clinical-hero::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 340px;
+    background: url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=60&auto=format&fit=crop') center/cover no-repeat;
+    opacity: 0.12;
+    border-radius: 0 16px 16px 0;
+}
+.clinical-hero::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 340px;
+    background: linear-gradient(90deg, #0d2461 0%, transparent 40%);
+    border-radius: 0 16px 16px 0;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-title { font-size: 1.4rem; font-weight: 800; color: #f0f9ff; margin-bottom: 0.35rem; }
+.hero-sub { font-size: 0.82rem; color: #93c5fd; line-height: 1.6; max-width: 520px; }
+.hero-badges { display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap; }
+.hero-badge {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #bfdbfe; font-size: 0.68rem; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.05em;
+}
+.hero-badge.green { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); color: #86efac; }
+.hero-badge.yellow { background: rgba(234,179,8,0.15); border-color: rgba(234,179,8,0.3); color: #fde047; }
+
+/* ── QR centered ─────────────────────────────────────────── */
+.qr-center {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+}
+.qr-label {
+    font-size: 0.68rem; color: #94a3b8; text-align: center;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-top: 4px;
+}
+
+/* ── Clinical feature strip ─────────────────────────────── */
+.feature-strip {
+    display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.feature-item {
+    flex: 1; min-width: 140px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #dbeafe;
+    border-radius: 12px; padding: 0.9rem 1rem;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 1px 4px rgba(10,31,68,0.06);
+}
+.feature-icon { font-size: 1.4rem; }
+.feature-text { font-size: 0.72rem; color: #475569; font-weight: 500; line-height: 1.4; }
+.feature-text b { color: #1e3a8a; display: block; font-size: 0.78rem; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -469,9 +559,10 @@ class HybridModel(nn.Module):
         return self.classifier(torch.cat((eff_out, swin_out), dim=1))
 
 # ── Google Drive file ID for the model weights ───────────────
-# Replace with your actual file ID from Google Drive share link:
-# https://drive.google.com/file/d/FILE_ID/view  →  copy FILE_ID
 GDRIVE_FILE_ID = "1up0E_dCI4ZcEWmT9Lu_xGvDq88LUj6Jt"
+
+# ── Hardcoded model path ──────────────────────────────────────
+MODEL_PATH = "best_model.pth"
 
 @st.cache_resource
 def load_model(path):
@@ -607,7 +698,7 @@ def make_qr(text):
                        error_correction=qrcode.constants.ERROR_CORRECT_L)
     qr.add_data(text)
     qr.make(fit=True)
-    img = qr.make_image(fill_color="#1e40af", back_color="#f8fafc")
+    img = qr.make_image(fill_color="#0a1f44", back_color="#f8fafc")
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()
@@ -630,7 +721,6 @@ def sanitize(text):
     }
     for src, dst in replacements.items():
         t = t.replace(src, dst)
-    # Final safety: strip anything still outside latin-1
     return t.encode('latin-1', errors='replace').decode('latin-1')
 
 def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes):
@@ -638,23 +728,21 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
 
     s = sanitize
 
-    # ── Layout constants (never use width=0 in cells/multi_cell) ──
-    L  = 12       # left margin mm
-    R  = 12       # right margin mm
-    T  = 20       # top margin mm
-    PW = 210      # A4 page width
-    CW = PW - L - R   # usable content width = 186 mm
+    L  = 12
+    R  = 12
+    T  = 20
+    PW = 210
+    CW = PW - L - R
 
     class PDF(FPDF):
         def header(self):
-            self.set_fill_color(37, 99, 235)
+            self.set_fill_color(10, 31, 68)
             self.rect(0, 0, PW, 16, 'F')
             self.set_font('Helvetica', 'B', 11)
             self.set_text_color(255, 255, 255)
             self.set_xy(L, 3)
-            # Explicit width = CW — never 0 in header/footer
             self.cell(CW, 10,
-                      'RetinaAI  |  Diabetic Retinopathy Screening Report',
+                      'RetinaScreen  |  Diabetic Retinopathy Screening Report',
                       ln=True)
 
         def footer(self):
@@ -668,13 +756,11 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
                       f'  |  Page {self.page_no()}',
                       align='C')
 
-    # ── IMPORTANT: set_margins BEFORE add_page ────────────────
     pdf = PDF(orientation='P', unit='mm', format='A4')
     pdf.set_margins(L, T, R)
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    # Reset to left margin — call before every block of output
     def lm():
         pdf.set_x(L)
 
@@ -695,10 +781,8 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
         pdf.cell(w_label, 5.5, s(label) + ':', ln=False)
         pdf.set_font('Helvetica', 'B', 8.5)
         pdf.set_text_color(30, 41, 59)
-        # Explicit remaining width — never 0
         pdf.cell(CW - w_label, 5.5, s(str(value)), ln=True)
 
-    # ── Patient Information ───────────────────────────────────
     section('Patient Information')
     for label, val in [
         ('Patient Name',        patient_info.get('name',       'N/A')),
@@ -714,8 +798,7 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
     ]:
         field(label, val)
 
-    # ── AI Analysis Result ────────────────────────────────────
-    section('AI Analysis Result')
+    section('Analysis Result')
     grade_rgb = [(22,163,74),(202,138,4),(234,88,12),(220,38,38),(147,51,234)]
     r, g, b = grade_rgb[pred]
 
@@ -733,7 +816,6 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
     field('Model Confidence', f'{confidence:.1f}%')
     field('Risk Score',       f'{risk_score(pred, probs)} / 100')
 
-    # ── Recommendation banner ─────────────────────────────────
     rec_title, _ = RECOMMENDATIONS[pred]
     pdf.ln(3)
     lm()
@@ -743,11 +825,10 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
     pdf.cell(CW, 8, f'  {s(rec_title)}', fill=True, ln=True)
     pdf.ln(2)
 
-    # ── Class Probabilities ───────────────────────────────────
     section('Class Probabilities')
-    LBL_W = 36    # label column
-    BAR_W = 95    # progress bar
-    PCT_W = 18    # percentage — total = 149, well within CW=186
+    LBL_W = 36
+    BAR_W = 95
+    PCT_W = 18
     for i, (name, prob) in enumerate(zip(LABEL_NAMES, probs)):
         lm()
         r2, g2, b2 = grade_rgb[i]
@@ -769,8 +850,6 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
         pdf.cell(PCT_W, 6, f'{prob * 100:.1f}%', ln=True)
     pdf.ln(2)
 
-    # ── Clinical Remarks ──────────────────────────────────────
-    # Rule: always call lm() before multi_cell — never mix cell()+multi_cell()
     section('Clinical Remarks')
     for remark in GRADE_REMARKS[pred]:
         lm()
@@ -778,7 +857,6 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
         pdf.set_text_color(71, 85, 105)
         pdf.multi_cell(CW, 5.5, s('- ' + remark))
 
-    # ── Retinal Images ────────────────────────────────────────
     section('Retinal Images')
     tmp_orig    = '/tmp/retina_orig.png'
     tmp_overlay = '/tmp/retina_cam.png'
@@ -801,7 +879,6 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
         pdf.image(tmp_orig, x=L, y=pdf.get_y(), w=IMG_W, h=58)
     pdf.ln(62)
 
-    # ── Clinician Notes ───────────────────────────────────────
     if notes and notes.strip():
         section('Clinician Notes')
         lm()
@@ -809,13 +886,12 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
         pdf.set_text_color(30, 41, 59)
         pdf.multi_cell(CW, 5.5, s(notes))
 
-    # ── Disclaimer ────────────────────────────────────────────
     pdf.ln(4)
     lm()
     pdf.set_font('Helvetica', 'I', 7)
     pdf.set_text_color(120, 113, 108)
     pdf.multi_cell(CW, 4.5,
-        'DISCLAIMER: This report is generated by an AI screening tool for research and '
+        'DISCLAIMER: This report is generated by a screening tool for research and '
         'educational purposes only. It must not replace professional medical evaluation '
         'by a qualified ophthalmologist or diabetologist. Clinical decisions must be '
         'made by licensed healthcare professionals.',
@@ -831,7 +907,7 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
 if "history" not in st.session_state:
     st.session_state.history = []
 if "batch_queue" not in st.session_state:
-    st.session_state.batch_queue = []   # list of {"name": str, "bytes": bytes}
+    st.session_state.batch_queue = []
 if "last_single_name" not in st.session_state:
     st.session_state.last_single_name = None
 
@@ -843,14 +919,13 @@ with st.sidebar:
     <div class='sb-brand'>
       <div class='sb-logo'>👁</div>
       <div>
-        <div class='sb-title'>RetinaAI</div>
+        <div class='sb-title'>RetinaScreen</div>
         <div class='sb-sub'>DR Screening Platform</div>
       </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("<div class='sb-section'>⚙ Configuration</div>", unsafe_allow_html=True)
-    model_path = st.text_input("Model path", value="best_model.pth")
     show_cam   = st.checkbox("Show Grad-CAM heatmap", value=True)
     alpha_val  = st.slider("Heatmap opacity", 0.2, 0.8, 0.45, 0.05, disabled=not show_cam)
 
@@ -876,16 +951,21 @@ st.markdown("""
   <div class='logo-wrap'>
     <div class='logo-icon'>👁</div>
     <div>
-      <div class='logo-text'>RetinaAI</div>
+      <div class='logo-text'>RetinaScreen</div>
       <div class='logo-sub'>Diabetic Retinopathy Screening</div>
     </div>
   </div>
   <div class='topbar-right'>
-    <span style='font-size:0.72rem;color:#94a3b8;'>
-      <span class='topbar-dot'></span>AI Online
-    </span>
+    <div class='topbar-clinic'>
+      <div class='topbar-clinic-icon'>🏥</div>
+      <div>
+        <div class='topbar-clinic-text'>Ophthalmology Department</div>
+        <div class='topbar-clinic-sub'>Clinical Screening System</div>
+      </div>
+    </div>
+    <div class='topbar-divider'></div>
     <span class='topbar-badge'>🩺 CLINICIAN MODE</span>
-    <span class='topbar-badge' style='background:#f0fdf4;border-color:#86efac;color:#15803d;'>
+    <span class='topbar-badge' style='background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4);color:#86efac;'>
       RESEARCH USE ONLY
     </span>
   </div>
@@ -906,9 +986,50 @@ tab1, tab2, tab3 = st.tabs([
 # ═════════════════════════════════════════════════════════════
 with tab1:
 
-    model, loaded = load_model(model_path)
+    model, loaded = load_model(MODEL_PATH)
     if loaded is not True:
         st.error(f"⚠️ {loaded}")
+
+    # ── Clinical hero banner ──────────────────────────────────
+    st.markdown("""
+    <div class='clinical-hero'>
+      <div class='hero-content'>
+        <div class='hero-title'>👁 Fundus Image Analysis</div>
+        <div class='hero-sub'>
+          Upload a retinal fundus photograph for automated diabetic retinopathy
+          grading using deep learning-based feature extraction and attention mechanisms.
+        </div>
+        <div class='hero-badges'>
+          <span class='hero-badge green'>5-Grade Classification</span>
+          <span class='hero-badge yellow'>Grad-CAM Visualization</span>
+          <span class='hero-badge'>PDF Report Export</span>
+          <span class='hero-badge'>NPDR / PDR Detection</span>
+        </div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Clinical feature strip ────────────────────────────────
+    st.markdown("""
+    <div class='feature-strip'>
+      <div class='feature-item'>
+        <div class='feature-icon'>🔬</div>
+        <div class='feature-text'><b>EfficientNet-B3</b>Multi-scale feature extraction</div>
+      </div>
+      <div class='feature-item'>
+        <div class='feature-icon'>🧠</div>
+        <div class='feature-text'><b>Swin Transformer V2</b>Hierarchical vision modeling</div>
+      </div>
+      <div class='feature-item'>
+        <div class='feature-icon'>🎯</div>
+        <div class='feature-text'><b>Grad-CAM Heatmap</b>Attention region visualization</div>
+      </div>
+      <div class='feature-item'>
+        <div class='feature-icon'>📊</div>
+        <div class='feature-text'><b>Confidence Scoring</b>Per-class probability output</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Upload
     st.markdown("<div class='card'>", unsafe_allow_html=True)
@@ -924,7 +1045,6 @@ with tab1:
         img_bytes = uploaded.read()
         pil_img   = Image.open(io.BytesIO(img_bytes)).convert("RGB")
 
-        # Auto-add to batch queue (once per unique filename)
         existing_names = [b["name"] for b in st.session_state.batch_queue]
         if uploaded.name not in existing_names:
             st.session_state.batch_queue.append({
@@ -1045,7 +1165,7 @@ with tab1:
                         confidence, pil_img, overlay, p_notes
                     )
                 fname = (
-                    f"RetinaAI_{(p_name or 'report').replace(' ', '_')}"
+                    f"RetinaScreen_{(p_name or 'report').replace(' ', '_')}"
                     f"_{datetime.datetime.now().strftime('%Y%m%d')}.pdf"
                 )
                 st.download_button(
@@ -1055,7 +1175,7 @@ with tab1:
 
         with col_qr:
             qr_text = (
-                f"RetinaAI Screening Result\n"
+                f"RetinaScreen Screening Result\n"
                 f"Patient: {p_name or 'N/A'}\n"
                 f"Date: {datetime.datetime.now().strftime('%Y-%m-%d')}\n"
                 f"Eye: {p_eye}\n"
@@ -1066,7 +1186,13 @@ with tab1:
                 f"[FOR RESEARCH USE ONLY]"
             )
             qr_bytes = make_qr(qr_text)
-            st.image(qr_bytes, width=110)
+            # ── Centered QR code ──────────────────────────────
+            st.markdown("<div class='qr-center'>", unsafe_allow_html=True)
+            _, qr_mid, _ = st.columns([1, 2, 1])
+            with qr_mid:
+                st.image(qr_bytes, use_container_width=True)
+            st.markdown("<div class='qr-label'>Scan to share result</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
             st.download_button(
                 "⬇ Save QR Code", qr_bytes,
                 "result_qr.png", "image/png",
@@ -1100,11 +1226,31 @@ with tab1:
 
     elif not uploaded:
         st.markdown("""
-        <div style='text-align:center;padding:4rem 1rem;'>
-          <div style='font-size:4rem;opacity:0.15;margin-bottom:1rem;'>🔬</div>
-          <div style='font-size:0.88rem;color:#94a3b8;line-height:1.8;'>
+        <div style='text-align:center;padding:4rem 1rem;background:rgba(255,255,255,0.7);
+                    border-radius:16px;border:1px dashed #cbd5e1;'>
+          <img src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&q=60&auto=format&fit=crop'
+               style='width:180px;height:120px;object-fit:cover;border-radius:12px;
+                      opacity:0.45;margin-bottom:1.2rem;display:block;margin-left:auto;margin-right:auto;'/>
+          <div style='font-size:0.95rem;font-weight:600;color:#334155;margin-bottom:0.4rem;'>
+            Upload a Retinal Fundus Image
+          </div>
+          <div style='font-size:0.82rem;color:#94a3b8;line-height:1.8;'>
             Fill in patient information in the sidebar,<br>
-            then upload a retinal fundus image above.
+            then upload a retinal fundus photograph above.
+          </div>
+          <div style='margin-top:1.2rem;display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap;'>
+            <span style='background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;
+                         font-size:0.68rem;font-weight:600;padding:4px 12px;border-radius:20px;'>
+              PNG / JPG supported
+            </span>
+            <span style='background:#f0fdf4;color:#15803d;border:1px solid #86efac;
+                         font-size:0.68rem;font-weight:600;padding:4px 12px;border-radius:20px;'>
+              256×256 auto-resize
+            </span>
+            <span style='background:#faf5ff;color:#7e22ce;border:1px solid #d8b4fe;
+                         font-size:0.68rem;font-weight:600;padding:4px 12px;border-radius:20px;'>
+              Grad-CAM enabled
+            </span>
           </div>
         </div>""", unsafe_allow_html=True)
 
@@ -1113,11 +1259,10 @@ with tab1:
 # ═════════════════════════════════════════════════════════════
 with tab2:
 
-    model_b, loaded_b = load_model(model_path)
+    model_b, loaded_b = load_model(MODEL_PATH)
     if loaded_b is not True:
         st.error(f"⚠️ {loaded_b}")
 
-    # Show auto-added images from single analysis
     if st.session_state.batch_queue:
         st.markdown(
             f"<div style='font-size:0.82rem;color:#64748b;margin-bottom:0.5rem;'>"
@@ -1137,7 +1282,6 @@ with tab2:
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Merge extra files into queue
     if extra_files:
         existing_names = [b["name"] for b in st.session_state.batch_queue]
         for f in extra_files:
@@ -1147,7 +1291,6 @@ with tab2:
                     "bytes": f.read()
                 })
 
-    # Clear queue button
     if st.session_state.batch_queue:
         col_run, col_clr = st.columns([3, 1])
         with col_clr:
@@ -1213,7 +1356,6 @@ with tab2:
         )
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Grade distribution
         valid = [r for r in results if r['grade'] != 'ERR']
         if valid:
             from collections import Counter
@@ -1258,7 +1400,6 @@ with tab3:
                 st.session_state.history = []
                 st.rerun()
 
-        # Quick stats
         total = len(st.session_state.history)
         from collections import Counter
         grade_dist = Counter(r['label'] for r in st.session_state.history)
