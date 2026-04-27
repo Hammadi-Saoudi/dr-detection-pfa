@@ -877,20 +877,31 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
     pil_img.resize((IMG_SIZE, IMG_SIZE)).save(tmp_orig)
 
     IMG_W = 65
+
     lm()
     pdf.set_font('Helvetica', '', 7)
     pdf.set_text_color(100, 116, 139)
 
     if overlay_img is not None:
         Image.fromarray(overlay_img).save(tmp_overlay)
-        pdf.cell(IMG_W + 4, 5, 'Original Fundus Image',       align='C', ln=False)
-        pdf.cell(IMG_W + 4, 5, 'Attention Map (Grad-CAM)',    align='C', ln=True)
+
+        pdf.cell(IMG_W + 4, 5, 'Original Fundus Image', align='C', ln=False)
+        pdf.cell(IMG_W + 4, 5, 'Attention Map (Grad-CAM)', align='C', ln=True)
+
         y_img = pdf.get_y()
-        pdf.image(tmp_orig,    x=L,              y=y_img, w=IMG_W, h=45)
-        pdf.image(tmp_overlay, x=L + IMG_W + 6,  y=y_img, w=IMG_W, h=45)
+
+    # 🔥 calcul centre
+        x_start = (210 - (2 * IMG_W + 6)) / 2
+
+        pdf.image(tmp_orig, x=x_start, y=y_img, w=IMG_W, h=45)
+        pdf.image(tmp_overlay, x=x_start + IMG_W + 6, y=y_img, w=IMG_W, h=45)
+
     else:
         pdf.cell(CW, 5, 'Original Fundus Image', ln=True)
-        pdf.image(tmp_orig, x=L, y=pdf.get_y(), w=IMG_W, h=45)
+
+        x_start = (210 - IMG_W) / 2
+
+        pdf.image(tmp_orig, x=x_start, y=pdf.get_y(), w=IMG_W, h=45)
     pdf.ln(62)
 
     if notes and notes.strip():
