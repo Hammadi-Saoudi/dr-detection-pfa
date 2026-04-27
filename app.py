@@ -23,7 +23,7 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://interfont.com/inter.css');
+@import url('https://www.shutterstock.com/image-vector/abstract-illustration-low-poly-human-600nw-2575065331.jpg');
 
 *, html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
@@ -39,34 +39,17 @@ st.markdown("""
     background-attachment: fixed;
 }
 
-/* Masquer les éléments inutiles mais garder le bouton de contrôle */
-#MainMenu, footer, header { visibility: hidden; }
-[data-testid="stDecoration"] { display: none; }
+/* 🔥 FIX: garder bouton sidebar visible */
+header { visibility: visible !important; }
 
-/* ── FIX: RENDRE LE BOUTON (FLÈCHE) VISIBLE ──────────────── */
-[data-testid="stSidebarCollapsedControl"] {
-    visibility: visible !important;
-    display: flex !important;
-    position: fixed !important;
-    top: 15px !important;
-    left: 15px !important;
-    z-index: 999999 !important;
-    background-color: #0a1f44 !important; /* Fond bleu marine */
+/* cacher menu et footer seulement */
+#MainMenu, footer { visibility: hidden; }
+
+/* 🔥 rendre bouton toggle visible et stylé */
+button[kind="header"] {
+    background-color: #1e3a5f !important;
+    color: white !important;
     border-radius: 8px !important;
-    padding: 4px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-}
-
-/* Forcer la couleur blanche de l'icône de la flèche */
-[data-testid="stSidebarCollapsedControl"] svg {
-    fill: #f0f9ff !important;
-    width: 24px !important;
-    height: 24px !important;
-}
-
-/* Bouton à l'intérieur du sidebar ouvert */
-[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] {
-    color: #dbeafe !important;
 }
 
 /* ── Sidebar (navy blue) ─────────────────────────────────── */
@@ -75,8 +58,6 @@ st.markdown("""
     border-right: 1px solid #112240 !important;
     padding-top: 0 !important;
 }
-</style>
-""", unsafe_allow_html=True)
 [data-testid="stSidebar"] > div:first-child {
     padding-top: 0 !important;
 }
@@ -137,6 +118,8 @@ st.markdown("""
     border-color: #112240 !important;
     margin: 1rem 0 !important;
 }
+</style>
+
 
 /* ── Topbar ─────────────────────────────────────────────── */
 .topbar {
