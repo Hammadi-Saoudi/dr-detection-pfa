@@ -23,7 +23,7 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://www.shutterstock.com/image-vector/abstract-illustration-low-poly-human-600nw-2575065331.jpg');
 
 *, html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
