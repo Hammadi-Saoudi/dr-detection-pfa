@@ -39,18 +39,29 @@ st.markdown("""
     background-attachment: fixed;
 }
 
-/* 🔥 FIX: garder bouton sidebar visible */
-header { visibility: visible !important; }
+/* 🔥 FIX FINAL — SUPPRIMER header Streamlit */
+header[data-testid="stHeader"] {
+    display: none !important;
+}
+
+/* 🔥 supprimer boutons Streamlit (Share etc.) */
+[data-testid="stToolbar"] {
+    display: none !important;
+}
+
+/* 🔥 supprimer espace vide en haut */
+.block-container {
+    padding-top: 1rem !important;
+}
+
+/* 🔥 garder bouton sidebar visible */
+[data-testid="collapsedControl"] {
+    display: block !important;
+    color: white !important;
+}
 
 /* cacher menu et footer seulement */
 #MainMenu, footer { visibility: hidden; }
-
-/* 🔥 rendre bouton toggle visible et stylé */
-button[kind="header"] {
-    background-color: #1e3a5f !important;
-    color: white !important;
-    border-radius: 8px !important;
-}
 
 /* ── Sidebar (navy blue) ─────────────────────────────────── */
 [data-testid="stSidebar"] {
