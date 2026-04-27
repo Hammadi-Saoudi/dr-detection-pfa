@@ -118,8 +118,6 @@ button[kind="header"] {
     border-color: #112240 !important;
     margin: 1rem 0 !important;
 }
-</style>
-
 
 /* ── Topbar ─────────────────────────────────────────────── */
 .topbar {
