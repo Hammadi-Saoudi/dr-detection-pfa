@@ -34,7 +34,7 @@ st.markdown("""
 .stApp {
     background: #eef2f7;
     background-image:
-        url('https://wallpapers.com/images/hd/eye-1920-x-1080-background-hkpmggsk16dpn7oi.jpg');
+        url('https://img.freepik.com/photos-gratuite/abstraction-luxe-simple-flou-gris-noir-degrade-utilise-comme-mur-fond-studio-pour-afficher-vos-produits_1258-100448.jpg?semt=ais_hybrid&w=740&q=80');
     background-size: cover;
     background-attachment: fixed;
 }
