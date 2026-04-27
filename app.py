@@ -39,20 +39,33 @@ st.markdown("""
     background-attachment: fixed;
 }
 
+/* Masquer les éléments inutiles mais garder le bouton de contrôle */
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
-/* 🚀 AJOUT : Rendre le bouton du Sidebar visible 🚀 */
+/* ── FIX: RENDRE LE BOUTON (FLÈCHE) VISIBLE ──────────────── */
 [data-testid="stSidebarCollapsedControl"] {
     visibility: visible !important;
-    color: #3b82f6 !important;
-    background-color: rgba(255, 255, 255, 0.8) !important;
-    border-radius: 0 8px 8px 0 !important;
-    top: 10px !important;
+    display: flex !important;
+    position: fixed !important;
+    top: 15px !important;
+    left: 15px !important;
+    z-index: 999999 !important;
+    background-color: #0a1f44 !important; /* Fond bleu marine */
+    border-radius: 8px !important;
+    padding: 4px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
 }
 
-/* Bouton à l'intérieur du sidebar (quand il est ouvert) */
-[data-testid="stSidebar"] button {
+/* Forcer la couleur blanche de l'icône de la flèche */
+[data-testid="stSidebarCollapsedControl"] svg {
+    fill: #f0f9ff !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* Bouton à l'intérieur du sidebar ouvert */
+[data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] {
     color: #dbeafe !important;
 }
 
@@ -62,6 +75,8 @@ st.markdown("""
     border-right: 1px solid #112240 !important;
     padding-top: 0 !important;
 }
+</style>
+""", unsafe_allow_html=True)
 [data-testid="stSidebar"] > div:first-child {
     padding-top: 0 !important;
 }
