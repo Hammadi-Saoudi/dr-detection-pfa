@@ -23,7 +23,7 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://www.shutterstock.com/image-vector/abstract-illustration-low-poly-human-600nw-2575065331.jpg');
+@import url('https://interfont.com/inter.css');
 
 *, html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
@@ -41,6 +41,20 @@ st.markdown("""
 
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
+
+/* 🚀 AJOUT : Rendre le bouton du Sidebar visible 🚀 */
+[data-testid="stSidebarCollapsedControl"] {
+    visibility: visible !important;
+    color: #3b82f6 !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 0 8px 8px 0 !important;
+    top: 10px !important;
+}
+
+/* Bouton à l'intérieur du sidebar (quand il est ouvert) */
+[data-testid="stSidebar"] button {
+    color: #dbeafe !important;
+}
 
 /* ── Sidebar (navy blue) ─────────────────────────────────── */
 [data-testid="stSidebar"] {
