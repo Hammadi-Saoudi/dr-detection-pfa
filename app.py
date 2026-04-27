@@ -876,7 +876,7 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
     tmp_overlay = '/tmp/retina_cam.png'
     pil_img.resize((IMG_SIZE, IMG_SIZE)).save(tmp_orig)
 
-    IMG_W = 88
+    IMG_W = 65
     lm()
     pdf.set_font('Helvetica', '', 7)
     pdf.set_text_color(100, 116, 139)
@@ -886,11 +886,11 @@ def make_pdf(patient_info, pred, probs, confidence, pil_img, overlay_img, notes)
         pdf.cell(IMG_W + 4, 5, 'Original Fundus Image',       align='C', ln=False)
         pdf.cell(IMG_W + 4, 5, 'Attention Map (Grad-CAM)',    align='C', ln=True)
         y_img = pdf.get_y()
-        pdf.image(tmp_orig,    x=L,              y=y_img, w=IMG_W, h=58)
-        pdf.image(tmp_overlay, x=L + IMG_W + 6,  y=y_img, w=IMG_W, h=58)
+        pdf.image(tmp_orig,    x=L,              y=y_img, w=IMG_W, h=45)
+        pdf.image(tmp_overlay, x=L + IMG_W + 6,  y=y_img, w=IMG_W, h=45)
     else:
         pdf.cell(CW, 5, 'Original Fundus Image', ln=True)
-        pdf.image(tmp_orig, x=L, y=pdf.get_y(), w=IMG_W, h=58)
+        pdf.image(tmp_orig, x=L, y=pdf.get_y(), w=IMG_W, h=45)
     pdf.ln(62)
 
     if notes and notes.strip():
