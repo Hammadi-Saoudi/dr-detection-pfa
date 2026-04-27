@@ -36,7 +36,7 @@ st.markdown("""
     background-image:
         radial-gradient(circle at 20% 30%, rgba(37,99,235,0.04) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(124,58,237,0.04) 0%, transparent 50%),
-        url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=1920&q=20&auto=format&fit=crop');
+        url('https://visionclinic.be/images-vision-clinic/vision-clinic-share.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-blend-mode: luminosity;
@@ -1005,28 +1005,6 @@ with tab1:
           <span class='hero-badge'>PDF Report Export</span>
           <span class='hero-badge'>NPDR / PDR Detection</span>
         </div>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── Clinical feature strip ────────────────────────────────
-    st.markdown("""
-    <div class='feature-strip'>
-      <div class='feature-item'>
-        <div class='feature-icon'>🔬</div>
-        <div class='feature-text'><b>EfficientNet-B3</b>Multi-scale feature extraction</div>
-      </div>
-      <div class='feature-item'>
-        <div class='feature-icon'>🧠</div>
-        <div class='feature-text'><b>Swin Transformer V2</b>Hierarchical vision modeling</div>
-      </div>
-      <div class='feature-item'>
-        <div class='feature-icon'>🎯</div>
-        <div class='feature-text'><b>Grad-CAM Heatmap</b>Attention region visualization</div>
-      </div>
-      <div class='feature-item'>
-        <div class='feature-icon'>📊</div>
-        <div class='feature-text'><b>Confidence Scoring</b>Per-class probability output</div>
       </div>
     </div>
     """, unsafe_allow_html=True)
