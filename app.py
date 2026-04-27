@@ -1013,12 +1013,6 @@ with tab1:
           Upload a retinal fundus photograph for automated diabetic retinopathy
           grading using deep learning-based feature extraction and attention mechanisms.
         </div>
-        <div class='hero-badges'>
-          <span class='hero-badge green'>5-Grade Classification</span>
-          <span class='hero-badge yellow'>Grad-CAM Visualization</span>
-          <span class='hero-badge'>PDF Report Export</span>
-          <span class='hero-badge'>NPDR / PDR Detection</span>
-        </div>
       </div>
     </div>
     """, unsafe_allow_html=True)
