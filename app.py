@@ -36,7 +36,7 @@ st.markdown("""
     background-image:
         radial-gradient(circle at 20% 30%, rgba(37,99,235,0.04) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(124,58,237,0.04) 0%, transparent 50%),
-        url('https://visionclinic.be/images-vision-clinic/vision-clinic-share.jpg');
+        url('https://www.shutterstock.com/image-vector/abstract-illustration-low-poly-human-600nw-2575065331.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-blend-mode: luminosity;
