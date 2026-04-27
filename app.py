@@ -372,7 +372,7 @@ st.markdown("""
     position: absolute;
     right: 0; top: 0; bottom: 0;
     width: 340px;
-    background: url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=60&auto=format&fit=crop') center/cover no-repeat;
+    background: url('https://www.shutterstock.com/image-vector/abstract-illustration-low-poly-human-600nw-2575065331.jpg') center/cover no-repeat;
     opacity: 0.12;
     border-radius: 0 16px 16px 0;
 }
